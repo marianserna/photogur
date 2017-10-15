@@ -1,7 +1,7 @@
 <h1>Edit Picture</h1>
 
 <p>
-  <%= link_to('Back', '/pictures/#{@picture.id}') %>
+  <%= link_to("Back", "/pictures/#{@picture.id}") %>
 </p>
 
 <%= form_for(@picture, url: "/pictures/#{@picture.id}") do |f| %>

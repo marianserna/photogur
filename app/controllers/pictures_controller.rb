@@ -11,7 +11,20 @@ class PicturesController < ApplicationController
   end
 
   def create
-    render text: "Received POST request to '/pictures' with the data URL: #{params.inspect}"
+    @picture = Picture.new
+
+    @picture.title = params[:picture][:title]
+    @picture.artist = params[:picture][:artist]
+    @picture.url = params[:picture][:url]
+
+
+    if @picture.save
+      # if the picture gets saved, generate a get request to "/pictures" (the index)
+      redirect_to "/pictures"
+    else
+      # otherwise render new.html.erb
+      render :new
+    end
   end
 
   def show
@@ -29,8 +42,9 @@ class PicturesController < ApplicationController
     @picture.artist = params[:picture][:artist]
     @picture.url = params[:picture][:url]
 
-    if @picture.save!
-      redirect_to '/pictures/#{@picture.id}'
+
+    if @picture.save
+      redirect_to "/pictures/#{@picture.id}"
     else
       render :edit
     end
