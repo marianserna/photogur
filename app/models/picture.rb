@@ -1,5 +1,10 @@
 class Picture < ApplicationRecord
 
+  validates :artist, :title, :url, presence: { message: 'Ahoy buccaneer! You must enter a title or grab me a grog!' }
+  validates :title, length: { minimum: 3, maximum: 20 }
+  validates :url, uniqueness: true
+  validates :url, format: URI::regexp(%w(http https))
+
   def self.newest_first
     Picture.order("created_at DESC")
   end
