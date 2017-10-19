@@ -6,9 +6,21 @@
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
 </head>
-<body>
 
-<%= yield %>
+<body>
+  <% if current_user %>
+      <p>
+        <%= link_to 'Home', root_url %>
+        <%= link_to 'Logout', session_path, method: :delete %>
+      </p>
+      <p>Hello <%= current_user.email %>!</p>
+      <% else %>
+        <p><%= link_to 'New User', new_user_path %></p>
+        |
+        <p><%= link_to 'Login', new_session_path %></p>
+        <p>Please login to see your balance</p>
+    <% end %>
+  <%= yield %>
 
 </body>
 </html>
