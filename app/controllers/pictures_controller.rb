@@ -1,7 +1,7 @@
 class PicturesController < ApplicationController
 
   before_action :load_picture, only: [:show, :edit, :update, :destroy]
-  before_action :ensure_ownership, except: [:index, :show]
+  before_action :ensure_ownership, only: [:edit, :update, :delete]
 
   def index
     @most_recent_pictures = Picture.most_recent_five
