@@ -1,7 +1,7 @@
 class Picture < ApplicationRecord
   belongs_to :user
 
-  validates :artist, :title, :url, :user_id, presence: { message: 'Ahoy buccaneer! You must enter a title or grab me a grog!' }
+  validates :artist, :title, :url, presence: true
   validates :title, length: { minimum: 3, maximum: 20 }
   validates :url, uniqueness: true
   validates :url, format: URI::regexp(%w(http https))
