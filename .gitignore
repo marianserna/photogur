@@ -21,3 +21,4 @@
 *.swn
 
 .DS_Store
+/public/uploads
