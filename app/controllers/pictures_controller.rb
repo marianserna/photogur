@@ -14,12 +14,12 @@ class PicturesController < ApplicationController
   end
 
   def create
-    @picture = Picture.new
-
-    @picture.title = params[:picture][:title]
-    @picture.artist = params[:picture][:artist]
-    @picture.url = params[:picture][:url]
+    @picture = Picture.new(picture_params)
     @picture.user_id = current_user.id
+
+    # @picture.title = params[:picture][:title]
+    # @picture.artist = params[:picture][:artist]
+    # @picture.url = params[:picture][:url]
 
     if @picture.save
       redirect_to "/pictures"
@@ -35,11 +35,11 @@ class PicturesController < ApplicationController
   end
 
   def update
-    @picture.title = params[:picture][:title]
-    @picture.artist = params[:picture][:artist]
-    @picture.url = params[:picture][:url]
+    # @picture.title = params[:picture][:title]
+    # @picture.artist = params[:picture][:artist]
+    # @picture.url = params[:picture][:url]
 
-    if @picture.save
+    if @picture.update(picture_params)
       redirect_to "/pictures/#{@picture.id}"
     else
       render :edit
@@ -63,5 +63,9 @@ class PicturesController < ApplicationController
       flash[:alert] = "Please log in"
       redirect_to picture_path(@picture)
     end
+  end
+
+  def picture_params
+    params.require(:picture).permit(:title, :artist, :url)
   end
 end

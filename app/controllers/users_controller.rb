@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       flash[:notice] = "#{@user.email} has been saved!"
+      session[:user_id] = @user.id
       redirect_to pictures_url
     else
       flash[:alert] = "Please fix errors"
