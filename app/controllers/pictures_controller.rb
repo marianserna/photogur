@@ -1,7 +1,7 @@
 class PicturesController < ApplicationController
 
-  before_action :ensure_login, except: [:index, :show]
   before_action :load_picture, only: [:show, :edit, :update, :destroy]
+  before_action :ensure_ownership, except: [:index, :show]
 
   def index
     @most_recent_pictures = Picture.most_recent_five
@@ -19,7 +19,7 @@ class PicturesController < ApplicationController
     @picture.title = params[:picture][:title]
     @picture.artist = params[:picture][:artist]
     @picture.url = params[:picture][:url]
-    @picture.user_id = params[:picture][:user_id]
+    @picture.user_id = current_user.id
 
     if @picture.save
       redirect_to "/pictures"
@@ -29,20 +29,15 @@ class PicturesController < ApplicationController
   end
 
   def show
-    return ensure_ownership
   end
 
   def edit
-    return ensure_ownership
   end
 
   def update
-    return ensure_ownership
-
     @picture.title = params[:picture][:title]
     @picture.artist = params[:picture][:artist]
     @picture.url = params[:picture][:url]
-
 
     if @picture.save
       redirect_to "/pictures/#{@picture.id}"
@@ -52,7 +47,6 @@ class PicturesController < ApplicationController
   end
 
   def destroy
-    @picture = Picture.find(params[:id])
     @picture.destroy
     redirect_to "/pictures"
   end
@@ -64,15 +58,10 @@ class PicturesController < ApplicationController
   end
 
   def ensure_ownership
-    unless current_user == @picture.user
+    unless current_user && current_user.id == @picture.user_id
+      # raise params.inspect
       flash[:alert] = "Please log in"
-      redirect_to new_session_url
-    end
-  end
-
-  def ensure_login
-    unless current_user
-      flash[:alert] = "Must be logged in"
+      redirect_to picture_path(@picture)
     end
   end
 end
